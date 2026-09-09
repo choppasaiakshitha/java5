@@ -1,0 +1,462 @@
+**checking whether a number is stable or unstable**
+public int findPassWord(int input1, int input2, int input3, int input4, int input5) {
+
+    int[] arr = {input1, input2, input3, input4, input5};
+    int stableSum = 0;
+    int unstableSum = 0;
+
+    for (int i = 0; i < arr.length; i++) {
+
+        int num = arr[i];
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+        // Count the frequency of each digit
+        if (num == 0) {
+            map.put(0, 1);
+        } else {
+            while (num > 0) {
+                int digit = num % 10;
+
+                if (map.containsKey(digit)) {
+                    map.put(digit, map.get(digit) + 1);
+                } else {
+                    map.put(digit, 1);
+                }
+
+                num = num / 10;
+            }
+        }
+
+        // Check whether all frequencies are equal
+        int frequency = -1;
+        boolean stable = true;
+
+        for (Integer digit : map.keySet()) {
+            int count = map.get(digit);
+
+            if (frequency == -1) {
+                frequency = count;
+            } else if (count != frequency) {
+                stable = false;
+                break;
+            }
+        }
+
+        if (stable) {
+            stableSum += arr[i];
+        } else {
+            unstableSum += arr[i];
+        }
+    }
+
+    return stableSum - unstableSum;
+}
+
+** result after alternative sum on N**
+
+import java.io.*;
+import java.util.*;
+
+class UserMainCode
+{
+    public int AddSub(int input1, int input2)
+    {
+        int N = input1;
+        int opt = input2;
+
+        int result = 0;
+
+        if (opt == 1)
+        {
+            // N - (N-1) + (N-2) - (N-3) ...
+            for (int i = N; i >= 1; i--)
+            {
+                if ((N - i) % 2 == 0)
+                {
+                    result = result + i;
+                }
+                else
+                {
+                    result = result - i;
+                }
+            }
+        }
+        else if (opt == 2)
+        {
+            // N + (N-1) - (N-2) + (N-3) ...
+            result = N;
+
+            for (int i = N - 1; i >= 1; i--)
+            {
+                if ((N - i) % 2 == 0)
+                {
+                    result = result - i;
+                }
+                else
+                {
+                    result = result + i;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args)
+    {
+        UserMainCode obj = new UserMainCode();
+
+        System.out.println(obj.AddSub(6, 1));
+        System.out.println(obj.AddSub(6, 2));
+    }
+}
+
+**generate series and find nth element**
+import java.io.*;
+import java.util.*;
+
+class UserMainCode
+{
+    public int seriesN(int input1, int input2, int input3, int input4)
+    {
+        int a = input1;
+        int b = input2;
+        int c = input3;
+        int n = input4;
+
+        if (n == 1)
+            return a;
+
+        if (n == 2)
+            return b;
+
+        if (n == 3)
+            return c;
+
+        int gap1 = b - a;
+        int gap2 = c - b;
+
+        int current = c;
+
+        for (int i = 4; i <= n; i++)
+        {
+            if (i % 2 == 0)
+                current = current + gap1;
+            else
+                current = current + gap2;
+        }
+
+        return current;
+    }
+
+    public static void main(String[] args)
+    {
+        UserMainCode obj = new UserMainCode();
+
+        System.out.println(obj.seriesN(1, 3, 6, 17));
+        System.out.println(obj.seriesN(5, 2, -2, 14));
+    }
+}
+
+**find the ddigit to move to form palindrome**
+import java.io.*;
+import java.util.*;
+
+class UserMainCode
+{
+    public int digitRemove_Palin(int input1)
+    {
+        String s = String.valueOf(input1);
+
+        // Already a palindrome
+        if (isPalindrome(s))
+            return 0;
+
+        // Try removing each digit
+        for (int i = 0; i < s.length(); i++)
+        {
+            String remaining = s.substring(0, i) + s.substring(i + 1);
+
+            if (isPalindrome(remaining))
+            {
+                return Character.getNumericValue(s.charAt(i));
+            }
+        }
+
+        return -1;
+    }
+
+    // Check whether a string is a palindrome
+    public boolean isPalindrome(String s)
+    {
+        int left = 0;
+        int right = s.length() - 1;
+
+        while (left < right)
+        {
+            if (s.charAt(left) != s.charAt(right))
+                return false;
+
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args)
+    {
+        UserMainCode obj = new UserMainCode();
+
+        System.out.println(obj.digitRemove_Palin(12332));
+        System.out.println(obj.digitRemove_Palin(251532));
+        System.out.println(obj.digitRemove_Palin(10101));
+        System.out.println(obj.digitRemove_Palin(19894));
+    }
+}
+
+**finding the numbers at non-prime index places**
+import java.io.*;
+import java.util.*;
+
+class UserMainCode
+{
+    public int sumOfNonPrimeIndexValues(int[] input1, int input2)
+    {
+        int sum = 0;
+
+        for (int i = 0; i < input2; i++)
+        {
+            if (!isPrime(i))
+            {
+                sum = sum + input1[i];
+            }
+        }
+
+        return sum;
+    }
+
+    // Check whether an index is prime
+    public boolean isPrime(int n)
+    {
+        if (n < 2)
+            return false;
+
+        for (int i = 2; i * i <= n; i++)
+        {
+            if (n % i == 0)
+                return false;
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args)
+    {
+        UserMainCode obj = new UserMainCode();
+
+        int[] arr = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+
+        System.out.println(obj.sumOfNonPrimeIndexValues(arr, 10));
+    }
+}
+
+**Nambiar Number Generator**
+import java.io.*;
+import java.util.*;
+
+class UserMainCode
+{
+    public int nnGenerator(String input1)
+    {
+        int firstDigit = Character.getNumericValue(input1.charAt(0));
+        int sum = 0;
+
+        for (int i = 0; i < input1.length(); i++)
+        {
+            int digit = Character.getNumericValue(input1.charAt(i));
+            sum = sum + digit;
+
+            // Stop when sum parity is opposite to first digit
+            if (sum % 2 != firstDigit % 2)
+            {
+                return sum;
+            }
+        }
+
+        return sum;
+    }
+
+    public static void main(String[] args)
+    {
+        UserMainCode obj = new UserMainCode();
+
+        System.out.println(obj.nnGenerator("9880127431"));
+    }
+}
+
+**User ID Generation**
+import java.io.*;
+import java.util.*;
+
+class UserMainCode
+{
+    public String userIdentification(String input1, String input2, int input3, int input4)
+    {
+        String firstName = input1;
+        String lastName = input2;
+        String pin = String.valueOf(input3);
+        int n = input4;
+
+        String smaller;
+        String longer;
+
+        // Step 1: Find smaller and longer name
+        if (firstName.length() < lastName.length())
+        {
+            smaller = firstName;
+            longer = lastName;
+        }
+        else if (lastName.length() < firstName.length())
+        {
+            smaller = lastName;
+            longer = firstName;
+        }
+        else
+        {
+            // Equal length: alphabetical comparison
+            if (firstName.compareTo(lastName) < 0)
+            {
+                smaller = firstName;
+                longer = lastName;
+            }
+            else
+            {
+                smaller = lastName;
+                longer = firstName;
+            }
+        }
+
+        // Step 2: Last letter of smaller + entire longer
+        String userId = "";
+
+        userId = userId + smaller.charAt(smaller.length() - 1);
+        userId = userId + longer;
+
+        // Step 3: Nth digit from left
+        userId = userId + pin.charAt(n - 1);
+
+        // Step 4: Nth digit from right
+        userId = userId + pin.charAt(pin.length() - n);
+
+        // Step 5: Toggle case
+        String result = "";
+
+        for (int i = 0; i < userId.length(); i++)
+        {
+            char ch = userId.charAt(i);
+
+            if (Character.isUpperCase(ch))
+            {
+                result = result + Character.toLowerCase(ch);
+            }
+            else if (Character.isLowerCase(ch))
+            {
+                result = result + Character.toUpperCase(ch);
+            }
+            else
+            {
+                result = result + ch;
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args)
+    {
+        UserMainCode obj = new UserMainCode();
+
+        System.out.println(obj.userIdentification("Rajiv", "Roy", 560037, 6));
+        System.out.println(obj.userIdentification("Manoj", "Kumar", 561327, 2));
+    }
+}
+**robot movement on a grid**
+import java.io.*;
+import java.util.*;
+
+class UserMainCode
+{
+    public String moveRobot(int input1, int input2, String input3, String input4)
+    {
+        int x = input1;
+        int y = input2;
+
+        String[] start = input3.split("-");
+
+        int posX = Integer.parseInt(start[0]);
+        int posY = Integer.parseInt(start[1]);
+        char direction = start[2].charAt(0);
+
+        // Remove spaces and process each instruction
+        String commands = input4.replace(" ", "");
+
+        for (int i = 0; i < commands.length(); i++)
+        {
+            char command = commands.charAt(i);
+
+            if (command == 'L')
+            {
+                if (direction == 'N')
+                    direction = 'W';
+                else if (direction == 'W')
+                    direction = 'S';
+                else if (direction == 'S')
+                    direction = 'E';
+                else if (direction == 'E')
+                    direction = 'N';
+            }
+            else if (command == 'R')
+            {
+                if (direction == 'N')
+                    direction = 'E';
+                else if (direction == 'E')
+                    direction = 'S';
+                else if (direction == 'S')
+                    direction = 'W';
+                else if (direction == 'W')
+                    direction = 'N';
+            }
+            else if (command == 'M')
+            {
+                int newX = posX;
+                int newY = posY;
+
+                if (direction == 'N')
+                    newY++;
+                else if (direction == 'S')
+                    newY--;
+                else if (direction == 'E')
+                    newX++;
+                else if (direction == 'W')
+                    newX--;
+
+                // Invalid move: stop immediately
+                if (newX < 0 || newX > x || newY < 0 || newY > y)
+                    break;
+
+                posX = newX;
+                posY = newY;
+            }
+        }
+
+        return posX + "-" + posY + "-" + direction;
+    }
+
+    public static void main(String[] args)
+    {
+        UserMainCode obj = new UserMainCode();
+
+        System.out.println(obj.moveRobot(3, 3, "2-2-E", "R M L M L M"));
+    }
+}
